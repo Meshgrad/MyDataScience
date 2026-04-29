@@ -7,3 +7,10 @@
     - bash Miniconda3-latest-Linux-x86_64.sh
 2) Активация окружения source ~/.bashrc
 3) Проверка окружения conda list
+
+Запуск командной оболочки IPython
+    ipython
+
+Запуск Jupyter Notebook
+    jupyter lab
+
