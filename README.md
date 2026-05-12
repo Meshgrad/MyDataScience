@@ -228,3 +228,21 @@ Cоздание массивов с нуля
     In [22]: x2[2, 0]
     Out[22]: np.int64(8)
 
+Специализированные универсальные функции
+
+    from scipy import special
+
+    #Гамма-функции (обобщенный факториалы) и тому подобные функции
+    x = [1, 5, 10]
+    print('gamma(x)     =', special.gamma(x))
+
+    special.gammaln(x)
+    special.beta(x)
+
+    #Функции ошибок (интеграл от гауссовой функции),
+    # дополнительная и обратрная к ней функция
+
+    special.erf(x)
+    special.erfc(x)
+    special.erfinv(x)
+
