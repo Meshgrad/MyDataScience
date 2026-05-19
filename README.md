@@ -1,5 +1,6 @@
 # MyDataScience
 Репозиторий для практического изучения книги O'REILLY "Python для сложных задач"
+Ссылка на электронную версию книги [GitHub книги](https://github.com/jakevdp/PythonDataScienceHandbook)
 
 ## Содержание
 - [MyDataScience](#mydatascience)
@@ -9,7 +10,9 @@
     - [Глава 3. Отладка и профилирование](#глава-3-отладка-и-профилирование)
   - [ЧАСТЬ II. Введение в NumPy](#часть-ii-введение-в-numpy)
     - [Глава 4. Типы данных в Python](#глава-4-типы-данных-в-python)
-- [Глава 5. Введение в массивы NumPy](#глава-5-введение-в-массивы-numpy)
+    - [Глава 5. Введение в массивы NumPy](#глава-5-введение-в-массивы-numpy)
+    - [Глава 6. Вычисления с массивами NumPy: универсальные функции](#глава-6-вычисления-с-массивами-numpy-универсальные-функции)
+    - [Глава 7.Агрегирование. минимум.максимум и все, что посередине](#глава-7агрегирование-минимуммаксимум-и-все-что-посередине)
 
 ## ЧАСТЬ I. JUPYTER: ЗА ПРЕДЕЛАМИ ОБЫЧНОГО PYTHON
 1) Установка Miniconda
@@ -209,7 +212,7 @@ Cоздание массивов с нуля
     np.empty(3)
     Out[10]: array([1., 1., 1.])
 
-# Глава 5. Введение в массивы NumPy
+### Глава 5. Введение в массивы NumPy
 
 Атрибуты массивов NumPy
 
@@ -227,4 +230,172 @@ Cоздание массивов с нуля
 
     In [22]: x2[2, 0]
     Out[22]: np.int64(8)
+
+!!! При вставке в массив целых чисел значения с плававющей точкой это значение будет незаметно усечено до целого !!!
+
+Для создания копии массива необходимо использовать метод tmp.*copy()*
+
+Метод *reshape()* необходим для изменеия формы массива
+
+    grid = np.arange(1, 10).reshape((3, 3))
+    print(grid)
+    [[1 2 3]
+    [4 5 6]
+    [7 8 9]]
+
+Преобразование в вектор-строку
+
+    x = np.array([1, 2, 3])
+
+    x.reshape((1, 3))
+    array([[1, 2, 3]])
+
+    x[np.newaxis, :]
+    array([[1, 2, 3]])
+
+Слияние массивов
+
+    Метод concatenate()
+    x = np.array([1, 2, 3])
+    y = np.array([3, 2, 1])
+    np.concatenate([x, y])
+    array([1, 2, 3, 3, 2, 1])
+
+    Методы np.vstack и np.hstack()
+
+    x = np.array([1, 2, 3])
+    grid = np.array([[9, 8, 7],
+                     [6, 5, 4]])
+
+    
+    np.vstack([x, grid])
+    array([[1, 2, 3],
+           [9, 8, 7],
+           [6, 5, 4]])
+   
+    y = np.array([[99],
+                  [99]])
+    np.hstack([grid, y])
+    array([[ 9,  8,  7, 99],
+           [ 6,  5,  4, 99]])
+
+np.dstack() - Для объединения по 3 оси
+
+Разбиерие массивов
+
+Методы разбиения 
+
+    В аргументах список индексов задающих разбиение
+    np.split()
+    x = [1, 2, 3, 99, 99, 3, 2, 1]
+    x1, x2, x3 = np.split(x, [3, 5])
+    print(x1, x2, x3)
+    [1 2 3] [99 99] [3 2 1]
+
+    grid = np.arange(16).reshape((4, 4))
+    array([[ 0,  1,  2,  3],
+           [ 4,  5,  6,  7],
+           [ 8,  9, 10, 11],
+           [12, 13, 14, 15]])
+    upper, lower = np.vsplit(grid, [2])
+    print(upper)
+    print(lower)
+    [[0 1 2 3]
+     [4 5 6 7]]
+    [[ 8  9 10 11]
+     [12 13 14 15]]
+
+    left, right = np.hsplit(grid, [2])
+    print(left)
+    print(right)
+    [[ 0  1]
+     [ 4  5]
+     [ 8  9]
+     [12 13]]
+    [[ 2  3]
+     [ 6  7]
+     [10 11]
+     [14 15]]
+
+### Глава 6. Вычисления с массивами NumPy: универсальные функции
+
+Медлительность циклов
+
+    import numpy as np 
+    compute_reciprocals(values):
+        output = np.empty(len(values))
+        for i in range(len(values)):
+            output[i] = 1.0 / values[i]
+        return output
+    
+    values = rng.integers(1, 10, size=5)
+    compute_reciprocals(values)
+
+    Out[2]: array([0.11111111, 0.25      , 1.        , 0.33333333, 0.125     ])
+
+Арифметические операции над массивами
+
+    x = np.arange(4)
+    print("x     =", x)
+    print("x + 5 =", x + 5)
+    print("x - 5 =", x - 5)
+    print("x * 2 =", x * 2)
+    print("x / 2 =", x / 2)
+    print("x // 2 =", x // 2)
+
+    x     = [0 1 2 3]
+    x + 5 = [5 6 7 8]
+    x - 5 = [-5 -4 -3 -2]
+    x * 2 = [0 2 4 6]
+    x / 2 = [ 0.   0.5  1.   1.5]
+    x // 2 = [0 0 1 1]
+
+Реализованные в библиотеке NumPy арифметические операции
+
+    +	np.add	Addition (e.g., 1 + 1 = 2)
+    -	np.subtract	Subtraction (e.g., 3 - 2 = 1)
+    -	np.negative	Unary negation (e.g., -2)
+    *	np.multiply	Multiplication (e.g., 2 * 3 = 6)
+    /	np.divide	Division (e.g., 3 / 2 = 1.5)
+    //	np.floor_divide	Floor division (e.g., 3 // 2 = 1)
+    **	np.power	Exponentiation (e.g., 2 ** 3 = 8)
+    %	np.mod	Modulus/remainder (e.g., 9 % 4 = 1)
+
+Абсолютное значение
+
+    x = np.array([-2, -1, 0, 1, 2])
+    abs(x)
+    array([2, 1, 0, 1, 2])
+
+    np.absolute(x)
+    array([2, 1, 0, 1, 2])
+    np.abs(x)
+    array([2, 1, 0, 1, 2])
+
+Тригонометрические функции
+
+    theta = np.linspace(0, np.pi, 3)
+
+    print("theta      = ", theta)
+    print("sin(theta) = ", np.sin(theta))
+    print("cos(theta) = ", np.cos(theta))
+    print("tan(theta) = ", np.tan(theta))
+
+    theta      =  [ 0.          1.57079633  3.14159265]
+    sin(theta) =  [  0.00000000e+00   1.00000000e+00   1.22464680e-16]
+    cos(theta) =  [  1.00000000e+00   6.12323400e-17  -1.00000000e+00]
+    tan(theta) =  [  0.00000000e+00   1.63312394e+16  -1.22464680e-16]
+
+Продвинетые возможности универсальных функций
+    сохранение результатов в массив. В каждой функции есть аргумент *out=* 
+
+    Сводные показатели
+    np.add.reduce(x)
+    np.multiply.reduce(x)
+    
+    Если надо сохранить все промежуточные результаты
+    np.add.accumulate(x)
+    np.multiply.accumulate(x)
+
+### Глава 7.Агрегирование. минимум.максимум и все, что посередине
 
